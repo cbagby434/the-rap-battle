@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>The Rap Battle</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+	<link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+	<!--Start Game screen-->
+	<div id="start-page" class="container-fluid game-page">
+		<div class="row justify-content-center">
+			<div class="row justify-content-center">
+				<div class="col align-self-center">
+					<h1 class="text-centered">The Rap Battle</h1>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col align-self-center">
+					<h3 class="text-centered">Whose bars are the HARDEST?!?</h3>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="d-grid gap-2 col-6 mx-auto">
+					<button type="button" class="btn btn-primary btn-lg text-centered decision-button">Start</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Create Player screen-->
+	<div id="create-player-page" class="container-fluid game-page">
+		<form id="player-info">
+			<div class="row justify-content-center">
+				<div class="row justify-content-center">
+					<div class="col align-self-center">
+						<div class="mb-3">
+							<label for="playerOneName" class="form-label">Player 1</label>
+							<input type="text" class="form-control" id="playerOneName" required placeholder="Player 1">
+						</div>
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col align-self-center">
+						<div class="mb-3">
+							<label for="playerTwoName" class="form-label">Player 2</label>
+							<input type="text" class="form-control" id="playerTwoName" required placeholder="Player 2">
+						</div>
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<div class="d-grid gap-2 col-6 mx-auto">
+						<button type="submit" class="btn btn-primary btn-lg text-centered decision-button">Next</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+	<script type="module" src="js/rapperFactory.js"></script>
+	<script type="module" src="js/rappers.js"></script>
+	<script type="module" src="js/player.js"></script>
+	<script type="module" src="js/main.js"></script>
+</body>
+</html>
