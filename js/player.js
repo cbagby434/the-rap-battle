@@ -29,9 +29,8 @@ class Player {
 				let targetIndex = Math.floor(Math.random() * rapperChoices.length)
 				let rapperToAdd = rapperChoices[targetIndex];
 				this.rappers.push(rapperToAdd);
-				console.log(rapperDict[rapperToAdd].type)
 				const rapperEl = new Rapper();
-				this.rapperElements[rapperToAdd] = rapperEl.create({}, rapperDict[rapperToAdd].type);;
+				this.rapperElements[rapperToAdd] = rapperEl.create({}, rapperDict[rapperToAdd].type);
 				rapperChoices.splice(targetIndex, 1);
 			}
 		}
