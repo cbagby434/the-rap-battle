@@ -1,5 +1,6 @@
 import data from './rappers.json' assert { type: "json" };
 
+// convert JSON data for use in game
 const rapperDict = {}
 data.rapperData.forEach((item) => {
 	rapperDict[item.name] = {

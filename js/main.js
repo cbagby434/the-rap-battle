@@ -1,8 +1,8 @@
 import { setupPlayers } from './player.js'
 import { GameScreen }  from './gamescreen.js'
 
-
-const startPage = '<div class="row justify-content-center">'+
+// Inner HTML for game landing page screen
+const landingPage = '<div class="row justify-content-center">'+
 		'<div class="row justify-content-center">'+
 			'<div class="col align-self-center">'+
 				'<h1 class="text-centered">The Rap Battle</h1>'+
@@ -20,7 +20,7 @@ const startPage = '<div class="row justify-content-center">'+
 		'</div>'+
 	'</div>';
 
-// '<div id="create-player-page" class="container-fluid game-page">'+
+// Inner HTML for player creation page screen
 const createPlayerPage = 
 		'<form id="player-info">'+
 			'<div class="row justify-content-center">'+
@@ -48,7 +48,12 @@ const createPlayerPage =
 			'</div>'+
 		'</form>'
 
+// Create new instance of GameScreen. This will add necessary screens to the "game-container" element in the DOM
 const rapBattleGame = new GameScreen();
-rapBattleGame.addScreenToList(startPage, 'startPage');
+
+// Add predefined screens to the game
+rapBattleGame.addScreenToList(landingPage, 'landingPage');
 rapBattleGame.addScreenToList(createPlayerPage, 'createPlayerPage', 'setupPlayers');
+
+// start the game
 rapBattleGame.startGame();

@@ -17,13 +17,11 @@ html, body {
 	align-items: center;
 	position: fixed;
 }
-#start-page{
+#landing-page{
 	background-color: green;
-	z-index: 1;
 }
 #create-player-page{
 	background-color: red;
-	z-index: 0;
 }
 .text-centered{
 	text-align: center;

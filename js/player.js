@@ -4,44 +4,49 @@ import { Rapper } from './rapperFactory.js';
 console.log(rapperDict);
 console.log(rapperChoices);
 
-let playerOne, playerTwo;
+let playerOne, playerTwo; // initiate players
 
 const setupPlayers = () => {
+	// create players, based on user input, and assign rappers for battle, at random
 	let playerOneName = document.getElementById('playerOneName').value;
 	let playerTwoName = document.getElementById('playerTwoName').value;
 	playerOne = new Player(playerOneName, '1');
 	playerTwo = new Player(playerTwoName, '2');
 	playerOne.assignRappers();
 	playerOne.getPlayerDetails();
-	console.log(playerOne.rapperElements[playerOne.rappers[0]].songs())
 	playerTwo.assignRappers();
 	playerTwo.getPlayerDetails();
 }
 
 document.addEventListener('setupPlayers', () => {
+	// listening to event from user interaction with gamescreen 
 	console.log('setupPlayers heard');
 	setupPlayers();
 });
 
 class Player {
 	constructor(name, order){
-		this.name = name;
-		this.playerOrder = order;
-		this.rappers = [];
-		this.rapperElements = {}
+		this.settings = {
+			name:name, // player name
+			playerOrder: order, // order of play 
+			rappers: [], // rappers assigned to player
+			rapperElements: {} // rapper information for battle
+		}
 		this.assignRappers = () => {
-			while(this.rappers.length < 3){
+			// assigns rappers, at random, to players for battle
+			while(this.settings.rappers.length < 3){
 				let targetIndex = Math.floor(Math.random() * rapperChoices.length)
 				let rapperToAdd = rapperChoices[targetIndex];
-				this.rappers.push(rapperToAdd);
+				this.settings.rappers.push(rapperToAdd);
 				const rapperEl = new Rapper();
-				this.rapperElements[rapperToAdd] = rapperEl.create({}, rapperDict[rapperToAdd].type);
+				this.settings.rapperElements[rapperToAdd] = rapperEl.create({}, rapperDict[rapperToAdd].type);
 				rapperChoices.splice(targetIndex, 1);
 			}
 		}
 		this.getPlayerDetails = () => {
-			console.log('player', this.playerOrder, 'is', this.name);
-			console.log('their rappers are:', this.rapperElements);
+			// shows each player's settings
+			console.log('player', this.settings.playerOrder, 'is', this.settings.name);
+			console.log('their rappers are:', this.settings.rapperElements);
 		};
 	}
 }

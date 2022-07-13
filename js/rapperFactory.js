@@ -1,5 +1,6 @@
 import { rapperDict, rapperChoices } from './rappers.js';
 
+//determine type of rapper and available attributes in battle
 // const rapperChoices = data.rapperData.map(({name}) => name);
 
 class Legacy {
