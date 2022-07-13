@@ -2,6 +2,7 @@
 	"rapperData":[
 		{
 			"name":"Jay-Z",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"legacy",
 			"moves":[
 				{
@@ -44,6 +45,7 @@
 		},
 		{
 			"name":"Nas",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"legacy",
 			"moves":[
 				{
@@ -86,6 +88,7 @@
 		},
 		{
 			"name":"Snoop Dogg",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"legacy",
 			"moves":[
 				{
@@ -119,6 +122,7 @@
 		},
 		{
 			"name":"Lil Wayne",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"legacy",
 			"moves":[
 				{
@@ -152,6 +156,7 @@
 		},
 		{
 			"name":"Andre 3000",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"legacy",
 			"moves":[
 				{
@@ -194,6 +199,7 @@
 		},
 		{
 			"name":"Drake",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"elite",
 			"moves":[
 				{
@@ -227,6 +233,7 @@
 		},
 		{
 			"name":"J. Cole",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"elite",
 			"moves":[
 				{
@@ -269,6 +276,7 @@
 		},
 		{
 			"name":"Kendrick Lamar",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"elite",
 			"moves":[
 				{
@@ -311,6 +319,7 @@
 		},
 		{
 			"name":"Wale",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"elite",
 			"moves":[
 				{
@@ -344,6 +353,7 @@
 		},
 		{
 			"name":"Nicki Minaj",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"elite",
 			"moves":[
 				{
@@ -377,6 +387,7 @@
 		},
 		{
 			"name":"Jeezy",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"finesse",
 			"moves":[
 				{
@@ -410,6 +421,7 @@
 		},
 		{
 			"name":"Future",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"finesse",
 			"moves":[
 				{
@@ -435,6 +447,7 @@
 		},
 		{
 			"name":"21 Savage",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"finesse",
 			"moves":[
 				{
@@ -468,6 +481,7 @@
 		},
 		{
 			"name":"Lil Durk",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"finesse",
 			"moves":[
 				{
@@ -493,6 +507,7 @@
 		},
 		{
 			"name":"Lil Baby",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"finesse",
 			"moves":[
 				{
@@ -517,6 +532,7 @@
 		},
 		{
 			"name":"Isaiah Rashad",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"raw",
 			"moves":[
 				{
@@ -541,6 +557,7 @@
 		},
 		{
 			"name":"Pusha-T",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"raw",
 			"moves":[
 				{
@@ -574,6 +591,7 @@
 		},
 		{
 			"name":"Rapsody",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"raw",
 			"moves":[
 				{
@@ -607,6 +625,7 @@
 		},
 		{
 			"name":"Big K.R.I.T.",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"raw",
 			"moves":[
 				{
@@ -631,6 +650,7 @@
 		},
 		{
 			"name":"Freddie Gibbs",
+			"image":"https://i.ibb.co/MPc62tg/rapper.jpg",
 			"type":"raw",
 			"moves":[
 				{

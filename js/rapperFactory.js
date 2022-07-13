@@ -29,7 +29,8 @@ class Raw {
 }
 
 class Rapper {
-	create = (options, rapperType) => {
+	create = (options) => {
+		const rapperType = options.type
 		if(!rapperType){
 			return 'unable to create rapper for battle'
 		}
@@ -55,13 +56,28 @@ class Rapper {
 				break;
 		}
 		rapper.rapperType = rapperType;
-		rapper.songs = () => {
-			console.log('these are the songs')
-		}
+		rapper.songs = options.moves
 		rapper.rap = () => {
 			console.log('these are the lyrics')	
 		}
+		rapper.makeCard = (name) => {
+			let songs = ''
 
+			rapper.songs.forEach((item)=>{
+				songs = songs + '<div class="rapper-song">'+item.name+'</div>';
+			})
+			console.log(options.image)
+
+			const cardElement = '<div style="background-color:'+rapper.color+';" class="rapper-card">'+
+					'<div class="rapper-header">'+
+						'<span class="rapper-name">'+name+'</span>'+
+						'<span class="rapper-stamina">STA:'+rapper.stamina+'</span>'+
+					'</div>'+
+					'<div class="rapper-image" style="background-image:url('+options.image+');"></div>'+
+					'<div class="rapper-songs">'+songs+'</div>'+
+				'</div>';
+			return cardElement;
+		}
 		return rapper;
 	}
 }

@@ -23,6 +23,71 @@ html, body {
 #create-player-page{
 	background-color: red;
 }
+#choice-page{
+	background-color: darkgrey;
+}
 .text-centered{
 	text-align: center;
+}
+#playerOne{
+	text-align: left;
+    background-color: aqua;
+}
+#playerTwo{
+	text-align: right;
+    background-color: deepskyblue;
+    pointer-events:none;
+}
+.player-name{
+	font-weight: bold;
+}
+.rapper-display{
+	display: flex;
+	justify-content: space-evenly;
+}
+.rapper-card{
+    width: 12rem;
+    height: 16.689rem;
+    border: solid 0.0625rem black;
+    border-radius: 0.25rem;
+    box-shadow: 0.25rem 0.25rem rgb(0 0 0 / 25%);
+	cursor: pointer;
+}
+.rapper-name{
+	text-align: left;
+	float: left;
+	pointer-events:none;
+}
+.rapper-stamina{
+	text-align: right;
+	float: right;
+	pointer-events:none;
+}
+
+.rapper-header{
+	height: 2rem;
+	padding: 0.5rem;
+	font-size: .8rem;
+	pointer-events:none;
+}
+.rapper-image{
+	height: 6.5rem;
+    margin: 0rem 0.5rem;
+    background-size: cover;
+    pointer-events:none;
+}
+.rapper-songs{
+	font-size: .9rem;
+    text-align: left;
+	padding: 0.5rem 1rem;
+	pointer-events:none;
+}
+.rapper-song{
+	padding-bottom: 0.2em;
+	pointer-events:none;
+}
+.selected-card{
+	border: solid 0.0625rem yellow;
+    box-shadow: 0.25rem 0.25rem yellow;
+    color: yellow;
 }

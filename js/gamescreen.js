@@ -10,7 +10,8 @@ class GameScreen{
 			defaultContainerClass: 'container-fluid game-page', // handles classname for screen addition to maintain css styling 
 			currentDecisionType: null // decision type that determines how it will show users the following screen (form or click)
 		};
-		this.addScreenToList = (screenInnerHTML, screenName, customEvent) => {
+		// this.addScreenToList = (screenInnerHTML, screenName, customEvent) => {
+		this.addScreenToList = (screenName, optionsObj) => {
 			// check if screen name is camelCase
 			try {
 				this.camelCaseCheck(screenName, 'addScreenToList')
@@ -20,12 +21,7 @@ class GameScreen{
 				return;
 			}
 			// adds screen information to an object (this.options.screens) to use later for creating the screen
-			this.options.screens[screenName] = {
-				'screenInfo':{
-					'innerHTML': screenInnerHTML,
-					'customEvent': customEvent
-				}
-			}
+			this.options.screens[screenName] = optionsObj;
 			
 			// adds screen to array, allowing game to show screens in sequence
 			this.options.screens.screenOrder.push(screenName);
@@ -40,17 +36,28 @@ class GameScreen{
 			
 			// create element
 			let el = document.createElement('div');
-			el.innerHTML = this.options.screens[screenName].screenInfo.innerHTML;
+			
+			// runs function to add dynamic information to gamescreen, if available
+			el.innerHTML = this.options.screens[screenName].finishElement ? this.options.screens[screenName].finishElement(this.options.screens[screenName].screenInfo.innerHTML) : this.options.screens[screenName].screenInfo.innerHTML;
+
 			el.id = this.convertToHyphenId(screenName);
 			this.options.currentScreen = el.id; // set current screen for ref
 			el.className = this.options.defaultContainerClass;
+
+
 			const gameScreen = document.getElementById("game-container");
 			document.body.insertBefore(el, gameScreen);
 			
 			// determine user decision type
 			this.options.currentDecisionType = el.getElementsByTagName('form').length == 0 ? 'click' : 'submit';
 			const decisionButton = document.getElementsByClassName('decision-button')[0];
+			console.log(decisionButton);
 			this.handleDecision(el, decisionButton, this.options.screens[screenName].screenInfo.customEvent);
+
+			// Fire this event after rendering page
+			const afterRenderEvt = this.options.screens[screenName].screenInfo.fireAfterRender
+			const thisEvent = new CustomEvent(afterRenderEvt, {});
+			document.dispatchEvent(thisEvent);
 		}
 		this.handleDecision = (target, clickElement, customEvent) => {
 			// handles decision made by user that will save information about the screen for the future and show user the following screen
