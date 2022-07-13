@@ -18,6 +18,11 @@ const setupPlayers = () => {
 	playerTwo.getPlayerDetails();
 }
 
+document.addEventListener('setupPlayers', () => {
+	console.log('setupPlayers heard');
+	setupPlayers();
+});
+
 class Player {
 	constructor(name, order){
 		this.name = name;
