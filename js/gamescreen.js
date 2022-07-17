@@ -51,7 +51,9 @@ class GameScreen{
 			// determine user decision type
 			this.options.currentDecisionType = el.getElementsByTagName('form').length == 0 ? 'click' : 'submit';
 			const decisionButton = document.getElementById(el.id).getElementsByClassName('decision-button')[0];
-			this.handleDecision(el, decisionButton, this.options.screens[screenName].screenInfo.customEvent);
+			if (decisionButton) {
+				this.handleDecision(el, decisionButton, this.options.screens[screenName].screenInfo.customEvent);
+			}
 
 			// Fire this event after rendering page
 			const afterRenderEvt = this.options.screens[screenName].screenInfo.fireAfterRender
@@ -76,6 +78,7 @@ class GameScreen{
 			}
 			if (this.options.currentDecisionType == 'click') {
 				// if screen has click event decision
+				console.log(this.options);
 				clickElement.addEventListener('click', (e) => {
 					// trigger custom event, defined in main.js, to save information for the future
 					if(customEvent){
