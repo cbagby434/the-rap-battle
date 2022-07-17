@@ -91,3 +91,16 @@ html, body {
     box-shadow: 0.25rem 0.25rem yellow;
     color: yellow;
 }
+#battle-page #playerTwo .rapper-display{
+	justify-content: right;
+}
+#battle-page #playerOne .rapper-display{
+	justify-content: left;
+}
+#battle-page #playerTwo .rapper-card, #battle-page #playerOne .rapper-card{
+	pointer-events: none;
+}
+#battle-page #playerTwo .rapper-song, #battle-page #playerOne .rapper-song{
+	pointer-events: auto;
+	cursor: pointer;
+}

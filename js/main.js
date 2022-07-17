@@ -60,20 +60,20 @@ const screens = {
 				'</div>'+
 				'<div class="row justify-content-center">'+
 					'<div class="col align-self-center">'+
-						'<div id="playerOne" class="mb-3 pb-3">'+
-							'<div class="player-name">playerOne.settings.name</div>'+
+						'<div id="playerTwo" class="mb-3 pb-3">'+
+							'<div class="player-name">playerTwo.settings.name</div>'+
 							'<div class="rapper-display">'+
-							'playerOne.settings.rappers'+
+							'playerTwo.settings.rappers'+
 							'</div>'+
 						'</div>'+
 					'</div>'+
 				'</div>'+
 				'<div class="row justify-content-center">'+
 					'<div class="col align-self-center">'+
-						'<div id="playerTwo" class="mb-3 pb-3">'+
-							'<div class="player-name">playerTwo.settings.name</div>'+
+						'<div id="playerOne" class="mb-3 pb-3">'+
+							'<div class="player-name">playerOne.settings.name</div>'+
 							'<div class="rapper-display">'+
-							'playerTwo.settings.rappers'+
+							'playerOne.settings.rappers'+
 							'</div>'+
 						'</div>'+
 					'</div>'+
@@ -84,6 +84,7 @@ const screens = {
 					'</div>'+
 				'</div>'+
 			'</div>',
+			customEvent: 'prepareBattle',
 			fireAfterRender:'allowChoice'
 		},
 		finishElement: (innerHTML) => {
@@ -107,6 +108,61 @@ const screens = {
 					// replace name with current players names
 					.replace('playerOne.settings.rappers', playerOneRapperElementInnerHTML)
 					.replace('playerTwo.settings.rappers', playerTwoRapperElementInnerHTML)
+
+			// return new html
+			return innerHTML;
+		}
+	},
+	battlePage: {
+		screenInfo:{
+			innerHTML: '<div class="row justify-content-center">'+
+				'<div class="row justify-content-center">'+
+					'<div class="col align-self-center">'+
+						'<h3 class="text-centered">Battle!</h3>'+
+					'</div>'+
+				'</div>'+
+				'<div id="playerTwo" class="row justify-content-center">'+
+					'<div class="player-name">playerTwo.settings.name</div>'+
+					'<div class="col align-self-center">'+
+						'<div class="mb-3 pb-3">'+
+							'<div class="message-display"></div>'+
+						'</div>'+
+					'</div>'+
+					'<div class="col align-self-center">'+
+						'<div id="playerTwo" class="mb-3 pb-3">'+
+							'<div class="rapper-display">'+
+							'playerTwo.settings.currentRapper'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+				'</div>'+
+				'<div id="playerOne" class="row justify-content-center">'+
+					'<div class="player-name">playerOne.settings.name</div>'+
+					'<div class="col align-self-center">'+
+						'<div class="mb-3 pb-3">'+
+							'<div class="rapper-display">'+
+							'playerOne.settings.currentRapper'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+					'<div class="col align-self-center">'+
+						'<div class="mb-3 pb-3">'+
+							'<div class="message-display"></div>'+
+						'</div>'+
+					'</div>'+
+				'</div>'+
+			'</div>',
+			fireAfterRender:'allowChoice'
+		},
+		finishElement: (innerHTML) => {
+			// add dynamic elements to inner html
+
+			innerHTML = innerHTML
+					// replace name with current players names
+					.replace('playerOne.settings.name', playerOne.settings.name)
+					.replace('playerTwo.settings.name', playerTwo.settings.name)
+					.replace('playerOne.settings.currentRapper', playerOne.settings.currentRapper.card)
+					.replace('playerTwo.settings.currentRapper', playerTwo.settings.currentRapper.card)
 
 			// return new html
 			return innerHTML;

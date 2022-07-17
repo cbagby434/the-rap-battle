@@ -39,19 +39,15 @@ class Rapper {
 
 		switch(rapperType){
 			case 'legacy':
-				console.log(rapperType, 'is running')
 				rapper = new Legacy(options); 
 				break;
 			case 'elite':
-				console.log(rapperType, 'is running')
 				rapper = new Elite(options); 
 				break;
 			case 'finesse':
-				console.log(rapperType, 'is running')
 				rapper = new Finesse(options); 
 				break;
 			case 'raw':
-				console.log(rapperType, 'is running')
 				rapper = new Raw(options); 
 				break;
 		}
@@ -66,9 +62,8 @@ class Rapper {
 			rapper.songs.forEach((item)=>{
 				songs = songs + '<div class="rapper-song">'+item.name+'</div>';
 			})
-			console.log(options.image)
 
-			const cardElement = '<div style="background-color:'+rapper.color+';" class="rapper-card">'+
+			const cardElement = '<div data-rapper-name="'+name+'" style="background-color:'+rapper.color+';" class="rapper-card">'+
 					'<div class="rapper-header">'+
 						'<span class="rapper-name">'+name+'</span>'+
 						'<span class="rapper-stamina">STA:'+rapper.stamina+'</span>'+
