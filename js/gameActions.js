@@ -1,4 +1,4 @@
-class GameScreen{
+class GameActions{
 	// Manages display and behavior of screens in the game
 	constructor(options){
 		this.options = {
@@ -46,7 +46,7 @@ class GameScreen{
 
 
 			const gameScreen = document.getElementById("game-container");
-			document.body.insertBefore(el, gameScreen);
+			gameScreen.appendChild(el)
 			
 			// determine user decision type
 			this.options.currentDecisionType = el.getElementsByTagName('form').length == 0 ? 'click' : 'submit';
@@ -93,7 +93,8 @@ class GameScreen{
 		}
 		this.removeGameScreen = () => {
 			// hides current screen
-			document.getElementById(this.options.currentScreen).style.display = 'none';
+			let oldScreen = document.getElementById(this.options.currentScreen);
+			oldScreen.remove();
 		}
 		this.nextScreen = () => {
 			// display next screen
@@ -110,13 +111,29 @@ class GameScreen{
 				let error_message = 'String '+s+' from func '+caller+' must be defined as a camel case string, beginning with a lowercase letter';
 				throw new Error(error_message);
 			}
-		}
+		}	
 		this.convertToHyphenId = (pageName) => {
 			// converts camelCase page name to hyphenated id name 
 			const ID = pageName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 			return ID;
 		}
+		this.startBattle = () => {
+			// pick who goes first
+			let players = [playerOne, playerTwo]
+			let currentPlayer = players[Math.floor(Math.random()*2)];
+			let msg = currentPlayer.settings.name+' will go first';
+			this.sendMessage(currentPlayer, msg);	
+		}
+		this.sendMessage = (player, msg) => {
+			console.log(player);
+			let playerCount = player.settings.playerOrder === '1' ? 'One' : 'Two' ;
+			playerCount = 'player'+playerCount
+			let currentMsgContainer = document.getElementById(playerCount).getElementsByClassName('message-display')[0];
+			console.log(currentMsgContainer);
+			msg = '<div class="message">'+msg+'</div>'
+			currentMsgContainer.innerHTML = msg+currentMsgContainer.innerHTML;
+		}
 	}
 }
 
-export { GameScreen };
+export { GameActions };

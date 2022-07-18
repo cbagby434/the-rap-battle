@@ -122,7 +122,9 @@ const screens = {
 					'<div class="player-name">playerTwo.settings.name</div>'+
 					'<div class="col align-self-center">'+
 						'<div class="mb-3 pb-3">'+
-							'<div class="message-display"></div>'+
+							'<div class="message-display">'+
+								'<button type="button" class="btn btn-primary btn-lg text-centered continue-button">Continue</button>'+
+							'</div>'+
 						'</div>'+
 					'</div>'+
 					'<div class="col align-self-center">'+
@@ -134,7 +136,7 @@ const screens = {
 					'</div>'+
 				'</div>'+
 				'<div id="playerOne" class="row justify-content-center">'+
-				'<div class="player-name">playerOne.settings.name</div>'+
+					'<div class="player-name">playerOne.settings.name</div>'+
 					'<div class="col align-self-center">'+
 						'<div class="mb-3 pb-3">'+
 							'<div class="rapper-display">'+
@@ -144,7 +146,9 @@ const screens = {
 					'</div>'+
 					'<div class="col align-self-center">'+
 						'<div class="mb-3 pb-3">'+
-							'<div class="message-display"></div>'+
+							'<div class="message-display">'+
+								'<button type="button" class="btn btn-primary btn-lg text-centered continue-button">Continue</button>'+
+							'</div>'+
 						'</div>'+
 					'</div>'+
 				'</div>'+
