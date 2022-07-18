@@ -1,14 +1,18 @@
+import { Player } from './player.js';
+
 class GameActions{
 	// Manages display and behavior of screens in the game
 	constructor(options){
-		this.options = {
+		this.settings = {
 			currentScreen: null,	// Current screen visible to user
 			currentScreenIndex: 0,	// Current index of visible screen
 			screens: { 	// contains all screen info for the game
 				screenOrder: []	// maintains sequence of screens in the game 
 			},
 			defaultContainerClass: 'container-fluid game-page', // handles classname for screen addition to maintain css styling 
-			currentDecisionType: null // decision type that determines how it will show users the following screen (form or click)
+			currentDecisionType: null, // decision type that determines how it will show users the following screen (form or click)
+			players:[],
+			currentPlayer:null
 		};
 		// this.addScreenToList = (screenInnerHTML, screenName, customEvent) => {
 		this.addScreenToList = (screenName, optionsObj) => {
@@ -20,15 +24,15 @@ class GameActions{
 				console.error(e); 
 				return;
 			}
-			// adds screen information to an object (this.options.screens) to use later for creating the screen
-			this.options.screens[screenName] = optionsObj;
+			// adds screen information to an object (this.settings.screens) to use later for creating the screen
+			this.settings.screens[screenName] = optionsObj;
 			
 			// adds screen to array, allowing game to show screens in sequence
-			this.options.screens.screenOrder.push(screenName);
+			this.settings.screens.screenOrder.push(screenName);
 		}
 		this.startGame = () => {
 			// begins showing user game screens, beginning with the first in the screenOrder array
-			const firstScreenName = this.options.screens.screenOrder[0];
+			const firstScreenName = this.settings.screens.screenOrder[0];
 			this.createGameScreen(firstScreenName);
 		}
 		this.createGameScreen = (screenName) => {
@@ -38,32 +42,32 @@ class GameActions{
 			let el = document.createElement('div');
 			
 			// runs function to add dynamic information to gamescreen, if available
-			el.innerHTML = this.options.screens[screenName].finishElement ? this.options.screens[screenName].finishElement(this.options.screens[screenName].screenInfo.innerHTML) : this.options.screens[screenName].screenInfo.innerHTML;
+			el.innerHTML = this.settings.screens[screenName].finishElement ? this.settings.screens[screenName].finishElement(this.settings.screens[screenName].screenInfo.innerHTML) : this.settings.screens[screenName].screenInfo.innerHTML;
 
 			el.id = this.convertToHyphenId(screenName);
-			this.options.currentScreen = el.id; // set current screen for ref
-			el.className = this.options.defaultContainerClass;
+			this.settings.currentScreen = el.id; // set current screen for ref
+			el.className = this.settings.defaultContainerClass;
 
 
 			const gameScreen = document.getElementById("game-container");
 			gameScreen.appendChild(el)
 			
 			// determine user decision type
-			this.options.currentDecisionType = el.getElementsByTagName('form').length == 0 ? 'click' : 'submit';
+			this.settings.currentDecisionType = el.getElementsByTagName('form').length == 0 ? 'click' : 'submit';
 			const decisionButton = document.getElementById(el.id).getElementsByClassName('decision-button')[0];
 			if (decisionButton) {
-				this.handleDecision(el, decisionButton, this.options.screens[screenName].screenInfo.customEvent);
+				this.handleDecision(el, decisionButton, this.settings.screens[screenName].screenInfo.customEvent);
 			}
 
 			// Fire this event after rendering page
-			const afterRenderEvt = this.options.screens[screenName].screenInfo.fireAfterRender
+			const afterRenderEvt = this.settings.screens[screenName].screenInfo.fireAfterRender
 			const thisEvent = new CustomEvent(afterRenderEvt, {});
 			document.dispatchEvent(thisEvent);
 		}
 		this.handleDecision = (target, clickElement, customEvent) => {
 			// handles decision made by user that will save information about the screen for the future and show user the following screen
 			
-			if(this.options.currentDecisionType == 'submit'){
+			if(this.settings.currentDecisionType == 'submit'){
 				// if screen requires form submission, listen for submit
 				target.getElementsByTagName('form')[0].addEventListener('submit', (e) => {
 					e.preventDefault();
@@ -76,9 +80,9 @@ class GameActions{
 					this.nextScreen();
 				});
 			}
-			if (this.options.currentDecisionType == 'click') {
+			if (this.settings.currentDecisionType == 'click') {
 				// if screen has click event decision
-				console.log(this.options);
+				console.log(this.settings);
 				clickElement.addEventListener('click', (e) => {
 					// trigger custom event, defined in main.js, to save information for the future
 					if(customEvent){
@@ -93,14 +97,14 @@ class GameActions{
 		}
 		this.removeGameScreen = () => {
 			// hides current screen
-			let oldScreen = document.getElementById(this.options.currentScreen);
+			let oldScreen = document.getElementById(this.settings.currentScreen);
 			oldScreen.remove();
 		}
 		this.nextScreen = () => {
 			// display next screen
 			this.removeGameScreen();
-			this.options.currentScreenIndex+=1; // set current sceen index
-			const nextScreenName = this.options.screens.screenOrder[this.options.currentScreenIndex];
+			this.settings.currentScreenIndex+=1; // set current sceen index
+			const nextScreenName = this.settings.screens.screenOrder[this.settings.currentScreenIndex];
 			this.createGameScreen(nextScreenName);
 		}
 		this.camelCaseCheck = (s, caller) => {
@@ -119,10 +123,18 @@ class GameActions{
 		}
 		this.startBattle = () => {
 			// pick who goes first
-			let players = [playerOne, playerTwo]
-			let currentPlayer = players[Math.floor(Math.random()*2)];
-			let msg = currentPlayer.settings.name+' will go first';
-			this.sendMessage(currentPlayer, msg);	
+			this.settings.currentPlayer = this.settings.players[Math.floor(Math.random()*2)];
+			let msg = this.settings.currentPlayer.settings.name+' will go first';
+			this.sendMessage(this.settings.currentPlayer, msg);	
+		}
+		this.changePlayer = () => {
+			this.settings.currentPlayer = (this.settings.currentPlayer+1)%2
+		}
+		this.handleTurn = () => {
+
+		}
+		this.proceedToNextAction = () => {
+
 		}
 		this.sendMessage = (player, msg) => {
 			console.log(player);
@@ -132,6 +144,21 @@ class GameActions{
 			console.log(currentMsgContainer);
 			msg = '<div class="message">'+msg+'</div>'
 			currentMsgContainer.innerHTML = msg+currentMsgContainer.innerHTML;
+		}
+		this.setupPlayers = () => {
+			// create players, based on user input, and assign rappers for battle, at random
+			let playerOneName = document.getElementById('playerOneName').value;
+			let playerTwoName = 'CPU';
+			window.playerOne = null;
+			window.playerTwo = null;
+			playerOne = new Player(playerOneName, '1');
+			playerTwo = new Player(playerTwoName, '2');
+			playerOne.assignRappers();
+			playerOne.getPlayerDetails();
+			playerTwo.assignRappers();
+			playerTwo.getPlayerDetails();
+			this.settings.players.push(playerOne)
+			this.settings.players.push(playerTwo)
 		}
 	}
 }

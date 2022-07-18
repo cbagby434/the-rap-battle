@@ -152,8 +152,7 @@ const screens = {
 						'</div>'+
 					'</div>'+
 				'</div>'+
-			'</div>',
-			fireAfterRender:'allowChoice'
+			'</div>'
 		},
 		finishElement: (innerHTML) => {
 			// add dynamic elements to inner html
@@ -164,6 +163,8 @@ const screens = {
 					.replace('playerTwo.settings.name', playerTwo.settings.name)
 					.replace('playerOne.settings.currentRapper', playerOne.settings.currentRapper.card)
 					.replace('playerTwo.settings.currentRapper', playerTwo.settings.currentRapper.card)
+			
+			console.log(innerHTML);
 
 			// return new html
 			return innerHTML;

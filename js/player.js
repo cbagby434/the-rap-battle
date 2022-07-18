@@ -4,18 +4,6 @@ import { Rapper } from './rapperFactory.js';
 console.log(rapperDict);
 console.log(rapperChoices);
 
-const setupPlayers = () => {
-	// create players, based on user input, and assign rappers for battle, at random
-	let playerOneName = document.getElementById('playerOneName').value;
-	let playerTwoName = 'CPU';
-	window.playerOne = new Player(playerOneName, '1');
-	window.playerTwo = new Player(playerTwoName, '2');
-	playerOne.assignRappers();
-	playerOne.getPlayerDetails();
-	playerTwo.assignRappers();
-	playerTwo.getPlayerDetails();
-}
-
 document.addEventListener('prepareBattle', ()=>{
 	playerOne.settings.currentRapper.name = document.getElementById('playerOne').getElementsByClassName('selected-card')[0].getAttribute('data-rapper-name');
 	playerOne.settings.currentRapper.card = playerOne.settings.rapperElements[playerOne.settings.currentRapper.name].makeCard(playerOne.settings.currentRapper.name)
@@ -23,11 +11,6 @@ document.addEventListener('prepareBattle', ()=>{
 	playerTwo.settings.currentRapper.card = playerTwo.settings.rapperElements[playerTwo.settings.currentRapper.name].makeCard(playerTwo.settings.currentRapper.name)
 	
 });	
-
-document.addEventListener('setupPlayers', () => {
-	// listening to event from user interaction with gamescreen 
-	setupPlayers();
-});
 
 class Player {
 	constructor(name, order){
@@ -60,4 +43,4 @@ class Player {
 	}
 }
 
-export { setupPlayers, Player }
+export { Player }
