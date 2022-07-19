@@ -6,25 +6,29 @@ import { rapperDict, rapperChoices } from './rappers.js';
 class Legacy {
 	constructor(options){
 		this.stamina = options.stamina || 125;		
-		this.color = options.color || '#c4a747';		
+		this.color = options.color || '#c4a747';
+		this.maxDamage = options.maxDamage || 25;		
 	}
 }
 class Elite {
 	constructor(options){
 		this.stamina = options.stamina || 110;
 		this.color = options.color || '#d8d8d8';
+		this.maxDamage = options.maxDamage || 25;
 	}
 }
 class Finesse {
 	constructor(options){
 		this.stamina = options.stamina || 100;
 		this.color = options.color || '#31639c';
+		this.maxDamage = options.maxDamage || 20;
 	}
 }
 class Raw {
 	constructor(options){
 		this.stamina = options.stamina || 100;
 		this.color = options.color || '#8d2c8b';
+		this.maxDamage = options.maxDamage || 20;
 	}
 }
 
@@ -73,6 +77,7 @@ class Rapper {
 				'</div>';
 			return cardElement;
 		}
+
 		return rapper;
 	}
 }

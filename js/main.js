@@ -14,6 +14,12 @@ rapBattleGame.startGame();
 
 document.addEventListener('startBattle', () => {
 	rapBattleGame.startBattle();
+	document.getElementById('playerOne').getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {
+		rapBattleGame.proceedToNextAction(e);
+	});
+	document.getElementById('playerTwo').getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {
+		rapBattleGame.proceedToNextAction(e);
+	});
 });
 
 document.addEventListener('setupPlayers', () => {

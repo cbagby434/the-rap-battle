@@ -12,7 +12,14 @@ class GameActions{
 			defaultContainerClass: 'container-fluid game-page', // handles classname for screen addition to maintain css styling 
 			currentDecisionType: null, // decision type that determines how it will show users the following screen (form or click)
 			players:[],
-			currentPlayer:null
+			currentPlayer:null,
+			opponent:null,
+			playerActions: {
+				playerOne:['prompt', 'rap', 'damage', 'check'],
+				playerTwo:['rap', 'damage', 'check']
+			},
+			actionCount:-1,
+			damageQueue:[]
 		};
 		// this.addScreenToList = (screenInnerHTML, screenName, customEvent) => {
 		this.addScreenToList = (screenName, optionsObj) => {
@@ -59,6 +66,10 @@ class GameActions{
 				this.handleDecision(el, decisionButton, this.settings.screens[screenName].screenInfo.customEvent);
 			}
 
+			this.afterRender(screenName);			
+
+		}
+		this.afterRender = (screenName) => {
 			// Fire this event after rendering page
 			const afterRenderEvt = this.settings.screens[screenName].screenInfo.fireAfterRender
 			const thisEvent = new CustomEvent(afterRenderEvt, {});
@@ -123,20 +134,82 @@ class GameActions{
 		}
 		this.startBattle = () => {
 			// pick who goes first
-			this.settings.currentPlayer = this.settings.players[Math.floor(Math.random()*2)];
+			// this.settings.currentPlayer = this.settings.players[Math.floor(Math.random()*2)];
+			this.settings.currentPlayer = this.settings.players[0];
+			this.settings.opponent = this.settings.players[1];
 			let msg = this.settings.currentPlayer.settings.name+' will go first';
-			this.sendMessage(this.settings.currentPlayer, msg);	
+			this.sendMessage(this.settings.currentPlayer, msg);
+			this.allowProceed();
+		}
+		this.allowProceed = () => {
+			let continueBtn = document.getElementById(this.settings.currentPlayer.getPlayerElId()).getElementsByClassName('continue-button')[0];
+			setTimeout(() => {
+				continueBtn.style.display = "inline-block";
+			}, 2000);
 		}
 		this.changePlayer = () => {
 			this.settings.currentPlayer = (this.settings.currentPlayer+1)%2
 		}
-		this.handleTurn = () => {
-
+		this.handleTurn = (action) => {
+			console.log('handle turn called')
+			let currPlayer = this.settings.currentPlayer;
+			switch(action){
+				case 'prompt':
+					this.sendMessage(currPlayer, 'Rap! Pick a song');
+					let songs = this.settings.currentPlayer.settings.currentRapper.cardEl.getElementsByClassName('rapper-song');
+					let currPlayerEl = document.getElementById(this.settings.currentPlayer.getPlayerElId());
+					console.log(songs);
+					Array.from(songs).forEach((item, index) => {
+						currPlayerEl.getElementsByClassName('rapper-song')[index].addEventListener('click', (e) => {
+							if (document.getElementById('playerOne').getElementsByClassName('selected-card').length > 0) {
+								document.getElementById('playerOne').getElementsByClassName('selected-card')[0].classList.remove('selected-card');
+							}
+							e.target.classList.add('selected-card');
+						});
+					})
+					break;
+				case 'rap':
+					let selectedSong = document.getElementById(this.settings.currentPlayer.getPlayerElId()).getElementsByClassName('selected-card')[0].innerText;
+					let formattedSongInfo = {}
+					this.settings.currentPlayer.settings.rapperElements[this.settings.currentPlayer.settings.currentRapper.name].songs.forEach(item => {
+						formattedSongInfo[item.name] = item.lyrics
+					});
+					let damageCount = Math.floor(Math.random()*formattedSongInfo[selectedSong].length)
+					let lyrics = formattedSongInfo[selectedSong][damageCount];
+					let maxDamage = this.settings.currentPlayer.settings.rapperElements[this.settings.currentPlayer.settings.currentRapper.name].maxDamage;
+					let damageDivider =  formattedSongInfo[selectedSong].length;
+					let damage = (damageCount+1)*(maxDamage/damageDivider);
+					this.settings.damageQueue.push(damage);
+					this.sendMessage(currPlayer, lyrics);
+					/*let currPlayer = this.settings.currentPlayer.getPlayerElId();
+					*/
+					break;
+				case 'damage':
+					let opponent = this.settings.opponent;
+					console.log(opponent.settings.rapperElements[this.settings.opponent.settings.currentRapper.name].stamina-this.settings.damageQueue[0]);
+					break;
+				case 'check':
+					break;
+			}
 		}
-		this.proceedToNextAction = () => {
-
+		this.proceedToNextAction = (e) => {
+			console.log('--proceedToNextAction--')
+			let currPlayer = this.settings.currentPlayer.getPlayerElId();
+			this.settings.actionCount+=1;
+			let action = this.settings.playerActions[currPlayer][this.settings.actionCount];
+			this.handleTurn(action)
+			document.getElementById(currPlayer).getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {
+				this.proceedToNextAction(e);
+			});
+		}
+		this.clearMessage = (player) => {
+			let oldMessage = document.getElementById(this.settings.currentPlayer.getPlayerElId()).getElementsByClassName('message')[0];
+			if(oldMessage){
+				oldMessage.remove();
+			}
 		}
 		this.sendMessage = (player, msg) => {
+			this.clearMessage(player);
 			console.log(player);
 			let playerCount = player.settings.playerOrder === '1' ? 'One' : 'Two' ;
 			playerCount = 'player'+playerCount

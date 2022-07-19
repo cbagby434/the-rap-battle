@@ -152,7 +152,8 @@ const screens = {
 						'</div>'+
 					'</div>'+
 				'</div>'+
-			'</div>'
+			'</div>',
+			fireAfterRender:'startBattle'
 		},
 		finishElement: (innerHTML) => {
 			// add dynamic elements to inner html
@@ -164,8 +165,6 @@ const screens = {
 					.replace('playerOne.settings.currentRapper', playerOne.settings.currentRapper.card)
 					.replace('playerTwo.settings.currentRapper', playerTwo.settings.currentRapper.card)
 			
-			console.log(innerHTML);
-
 			// return new html
 			return innerHTML;
 		}

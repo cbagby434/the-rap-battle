@@ -7,10 +7,13 @@ console.log(rapperChoices);
 document.addEventListener('prepareBattle', ()=>{
 	playerOne.settings.currentRapper.name = document.getElementById('playerOne').getElementsByClassName('selected-card')[0].getAttribute('data-rapper-name');
 	playerOne.settings.currentRapper.card = playerOne.settings.rapperElements[playerOne.settings.currentRapper.name].makeCard(playerOne.settings.currentRapper.name)
+	playerOne.settings.currentRapper.cardEl = document.querySelectorAll('[data-rapper-name="'+playerOne.settings.currentRapper.name+'"]')[0];
 	playerTwo.settings.currentRapper.name = document.getElementById('playerTwo').getElementsByClassName('selected-card')[0].getAttribute('data-rapper-name');
 	playerTwo.settings.currentRapper.card = playerTwo.settings.rapperElements[playerTwo.settings.currentRapper.name].makeCard(playerTwo.settings.currentRapper.name)
-	
-});	
+	playerTwo.settings.currentRapper.cardEl = document.querySelectorAll('[data-rapper-name="'+playerTwo.settings.currentRapper.name+'"]')[0];
+});
+
+
 
 class Player {
 	constructor(name, order){
@@ -21,7 +24,8 @@ class Player {
 			rapperElements: {}, // rapper information for battle
 			currentRapper: {
 				name:null,
-				card:null
+				card:null,
+				cardEl: null
 			} // current rapper selected by user to battle
 		}
 		this.assignRappers = () => {
@@ -34,6 +38,10 @@ class Player {
 				this.settings.rapperElements[rapperToAdd] = rapperEl.create(rapperDict[rapperToAdd]);
 				rapperChoices.splice(targetIndex, 1);
 			}
+		}
+		this.getPlayerElId = () => {
+			let suffix = this.settings.playerOrder === '1' ? 'One' : 'Two' ;
+			return 'player'+suffix; 
 		}
 		this.getPlayerDetails = () => {
 			// shows each player's settings

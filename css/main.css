@@ -105,5 +105,10 @@ html, body {
 	cursor: pointer;
 }
 .message-display{
-	text-align: center;
+	text-align: center;	
+    min-height: 5rem;
+}
+.continue-button{
+	display: none;
+	pointer-events: auto;
 }
