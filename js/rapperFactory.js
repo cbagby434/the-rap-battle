@@ -33,7 +33,9 @@ class Raw {
 }
 
 class Rapper {
-	create = (options) => {
+	create = (name) => {
+		console.log(name);
+		let options = rapperDict[name];
 		const rapperType = options.type
 		if(!rapperType){
 			return 'unable to create rapper for battle'
@@ -55,11 +57,13 @@ class Rapper {
 				rapper = new Raw(options); 
 				break;
 		}
+		rapper.name = name;
 		rapper.rapperType = rapperType;
 		rapper.songs = options.moves
 		rapper.rap = () => {
 			console.log('these are the lyrics')	
 		}
+
 		rapper.makeCard = (name) => {
 			let songs = ''
 
@@ -75,7 +79,10 @@ class Rapper {
 					'<div class="rapper-image" style="background-image:url('+options.image+');"></div>'+
 					'<div class="rapper-songs">'+songs+'</div>'+
 				'</div>';
-			return cardElement;
+
+			rapper.card = cardElement
+
+			return rapper.card;
 		}
 
 		return rapper;

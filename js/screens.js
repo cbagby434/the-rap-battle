@@ -94,12 +94,12 @@ const screens = {
 			
 			// add rappers to rapper display
 			let playerOneRapperElementInnerHTML = ''
-			playerOne.settings.rappers.forEach((item) => {
-				playerOneRapperElementInnerHTML+=playerOne.settings.rapperElements[item].makeCard(item);
+			playerOne.rappers.team.forEach((item) => {
+				playerOneRapperElementInnerHTML+=playerOne.rappers[item].makeCard(item);
 			})
 			let playerTwoRapperElementInnerHTML = ''
-			playerTwo.settings.rappers.forEach((item) => {
-				 playerTwoRapperElementInnerHTML+=playerTwo.settings.rapperElements[item].makeCard(item);
+			playerTwo.rappers.team.forEach((item) => {
+				 playerTwoRapperElementInnerHTML+=playerTwo.rappers[item].makeCard(item);
 			})
 			innerHTML = innerHTML
 					// replace name with current players names

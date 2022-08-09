@@ -130,9 +130,9 @@ class GameManager{
 				window.playerTwo = null;
 				playerOne = new Player(playerOneName, '1');
 				playerTwo = new Player(playerTwoName, '2');
-				playerOne.assignRappers();
+				playerOne.assembleTeam();
 				playerOne.getPlayerDetails();
-				playerTwo.assignRappers();
+				playerTwo.assembleTeam();
 				playerTwo.getPlayerDetails();
 				this.settings.players.push(playerOne)
 				this.settings.players.push(playerTwo)
@@ -171,7 +171,8 @@ class GameManager{
 				switch(action){
 					case 'prompt':
 						this.actions.sendMessage(currPlayer, 'Rap! Pick a song');
-						let songs = this.settings.currentPlayer.settings.currentRapper.cardEl.getElementsByClassName('rapper-song');
+						const currentCardEl = document.querySelectorAll('[data-rapper-name="'+this.settings.currentPlayer.settings.currentRapper.name+'"]')[0];
+						let songs = currentCardEl.getElementsByClassName('rapper-song');
 						let currPlayerEl = document.getElementById(this.settings.currentPlayer.getPlayerElId());
 						console.log(songs);
 						Array.from(songs).forEach((item, index) => {
@@ -186,12 +187,13 @@ class GameManager{
 					case 'rap':
 						let selectedSong = document.getElementById(this.settings.currentPlayer.getPlayerElId()).getElementsByClassName('selected-card')[0].innerText;
 						let formattedSongInfo = {}
-						this.settings.currentPlayer.settings.rapperElements[this.settings.currentPlayer.settings.currentRapper.name].songs.forEach(item => {
+						this.settings.currentPlayer.settings.currentRapper
+						this.settings.currentPlayer.rappers[this.settings.currentPlayer.settings.currentRapper.name].songs.forEach(item => {
 							formattedSongInfo[item.name] = item.lyrics
 						});
 						let damageCount = Math.floor(Math.random()*formattedSongInfo[selectedSong].length)
 						let lyrics = formattedSongInfo[selectedSong][damageCount];
-						let maxDamage = this.settings.currentPlayer.settings.rapperElements[this.settings.currentPlayer.settings.currentRapper.name].maxDamage;
+						let maxDamage = this.settings.currentPlayer.rappers[this.settings.currentPlayer.settings.currentRapper.name].maxDamage;
 						let damageDivider =  formattedSongInfo[selectedSong].length;
 						let damage = (damageCount+1)*(maxDamage/damageDivider);
 						this.settings.damageQueue.push(damage);
@@ -201,7 +203,7 @@ class GameManager{
 						break;
 					case 'damage':
 						let opponent = this.settings.opponent;
-						console.log(opponent.settings.rapperElements[this.settings.opponent.settings.currentRapper.name].stamina-this.settings.damageQueue[0]);
+						console.log(opponent.rappers[this.settings.opponent.settings.currentRapper.name].stamina-this.settings.damageQueue[0]);
 						break;
 					case 'check':
 						break;
@@ -225,9 +227,6 @@ class GameManager{
 				currentMsgContainer.innerHTML = msg+currentMsgContainer.innerHTML;
 			}
 		}
-
-		
-		
 	}
 }
 
