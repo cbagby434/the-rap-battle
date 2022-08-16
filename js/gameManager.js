@@ -137,6 +137,12 @@ class GameManager{
 				this.settings.players.push(playerOne)
 				this.settings.players.push(playerTwo)
 			},
+			prepareBattle: () => {
+				const playerOneSelection = document.getElementById('playerOne').getElementsByClassName('selected-card')[0].getAttribute('data-rapper-name');
+				const playerTwoSelection = document.getElementById('playerTwo').getElementsByClassName('selected-card')[0].getAttribute('data-rapper-name');
+				playerOne.setCurrentRapper(playerOneSelection); 
+				playerTwo.setCurrentRapper(playerTwoSelection); 
+			},
 			startBattle: () => {
 				// pick who goes first
 				// this.settings.currentPlayer = this.settings.players[Math.floor(Math.random()*2)];
@@ -186,18 +192,10 @@ class GameManager{
 						break;
 					case 'rap':
 						let selectedSong = document.getElementById(this.settings.currentPlayer.getPlayerElId()).getElementsByClassName('selected-card')[0].innerText;
-						let formattedSongInfo = {}
-						this.settings.currentPlayer.settings.currentRapper
-						this.settings.currentPlayer.rappers[this.settings.currentPlayer.settings.currentRapper.name].songs.forEach(item => {
-							formattedSongInfo[item.name] = item.lyrics
-						});
-						let damageCount = Math.floor(Math.random()*formattedSongInfo[selectedSong].length)
-						let lyrics = formattedSongInfo[selectedSong][damageCount];
-						let maxDamage = this.settings.currentPlayer.rappers[this.settings.currentPlayer.settings.currentRapper.name].maxDamage;
-						let damageDivider =  formattedSongInfo[selectedSong].length;
-						let damage = (damageCount+1)*(maxDamage/damageDivider);
-						this.settings.damageQueue.push(damage);
-						this.actions.sendMessage(currPlayer, lyrics);
+						console.log('rapper about to rap');
+						let rapping = this.settings.currentPlayer.settings.currentRapper.rap(selectedSong);
+						this.settings.damageQueue.push(rapping.damage);
+						this.actions.sendMessage(currPlayer, rapping.lyrics);
 						/*let currPlayer = this.settings.currentPlayer.getPlayerElId();
 						*/
 						break;

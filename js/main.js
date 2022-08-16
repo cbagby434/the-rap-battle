@@ -12,6 +12,10 @@ for (screen in screens){
 // start the game
 rapBattleGame.actions.startGame();
 
+document.addEventListener('prepareBattle', ()=>{
+	rapBattleGame.actions.prepareBattle()
+});
+
 document.addEventListener('startBattle', () => {
 	rapBattleGame.actions.startBattle();
 	document.getElementById('playerOne').getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {

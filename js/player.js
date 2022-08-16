@@ -4,13 +4,6 @@ import { Rapper } from './rapperFactory.js';
 console.log(rapperDict);
 console.log(rapperChoices);
 
-document.addEventListener('prepareBattle', ()=>{
-	const playerOneSelection = document.getElementById('playerOne').getElementsByClassName('selected-card')[0].getAttribute('data-rapper-name');
-	const playerTwoSelection = document.getElementById('playerTwo').getElementsByClassName('selected-card')[0].getAttribute('data-rapper-name');
-	playerOne.setCurrentRapper(playerOneSelection); 
-	playerTwo.setCurrentRapper(playerTwoSelection); 
-});
-
 class Player {
 	constructor(name, order){
 		this.settings = {

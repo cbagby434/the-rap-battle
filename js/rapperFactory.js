@@ -59,15 +59,31 @@ class Rapper {
 		}
 		rapper.name = name;
 		rapper.rapperType = rapperType;
-		rapper.songs = options.moves
-		rapper.rap = () => {
-			console.log('these are the lyrics')	
+		rapper.songs = {};
+		options.moves.forEach((song)=>{
+			rapper.songs[song['name']] = {
+				'lyrics': song['lyrics']
+			}
+		});
+		rapper.rap = (song) => {
+			let pendingRaps = {
+				lyrics:'',
+				damage:0
+			}
+			// receive selected song
+			const lyrics = rapper.songs[song].lyrics
+			// choose lyrics at random
+			const randLyricIndex = Math.floor(Math.random()*lyrics.length)
+			pendingRaps.lyrics = lyrics[randLyricIndex];
+			pendingRaps.damage = (rapper.maxDamage / lyrics.length) * (randLyricIndex + 1);
+			// return object of rap lyrics and pending damage to opponent stamina
+			return pendingRaps;
 		}
 
 		rapper.makeCard = (name) => {
 			let songs = ''
 
-			rapper.songs.forEach((item)=>{
+			options.moves.forEach((item)=>{
 				songs = songs + '<div class="rapper-song">'+item.name+'</div>';
 			})
 
