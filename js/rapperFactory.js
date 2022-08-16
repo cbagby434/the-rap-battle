@@ -79,6 +79,13 @@ class Rapper {
 			// return object of rap lyrics and pending damage to opponent stamina
 			return pendingRaps;
 		}
+		rapper.staminaLoss = (damage) => {
+			let staminaElement = document.querySelectorAll('[data-rapper-name="'+rapper.name+'"]')[0].getElementsByClassName('rapper-stamina')[0];
+			console.log(staminaElement);
+			rapper.stamina -= damage;
+			if (rapper.stamina < 0) {rapper.stamina = 0}
+			staminaElement.innerHTML = 'STA:'+rapper.stamina;
+		}
 
 		rapper.makeCard = (name) => {
 			let songs = ''

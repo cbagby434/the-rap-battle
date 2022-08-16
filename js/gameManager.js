@@ -10,7 +10,7 @@ class GameManager{
 			players:[],
 			currentPlayer:null,
 			opponent:null,
-			damageQueue:[]
+			damageQueue:0
 		};
 		// this object will handle all game display
 		this.screenManager = {
@@ -171,9 +171,13 @@ class GameManager{
 			changePlayer: () => {
 				this.settings.currentPlayer = (this.settings.currentPlayer+1)%2
 			},
+			endTurn: () => {
+				
+			},
 			handleTurn: (action) => {
 				console.log('handle turn called', action)
 				let currPlayer = this.settings.currentPlayer;
+				let opponent = this.settings.opponent;
 				switch(action){
 					case 'prompt':
 						this.actions.sendMessage(currPlayer, 'Rap! Pick a song');
@@ -194,16 +198,23 @@ class GameManager{
 						let selectedSong = document.getElementById(this.settings.currentPlayer.getPlayerElId()).getElementsByClassName('selected-card')[0].innerText;
 						console.log('rapper about to rap');
 						let rapping = this.settings.currentPlayer.settings.currentRapper.rap(selectedSong);
-						this.settings.damageQueue.push(rapping.damage);
+						this.settings.damageQueue = rapping.damage;
 						this.actions.sendMessage(currPlayer, rapping.lyrics);
-						/*let currPlayer = this.settings.currentPlayer.getPlayerElId();
-						*/
 						break;
 					case 'damage':
-						let opponent = this.settings.opponent;
-						console.log(opponent.rappers[this.settings.opponent.settings.currentRapper.name].stamina-this.settings.damageQueue[0]);
+						opponent.settings.currentRapper.staminaLoss(this.settings.damageQueue);
+						let msg = 'those bars hurt '+opponent.settings.currentRapper.name+'\'s '+'stamina by '+ this.settings.damageQueue+' points';
+						this.actions.sendMessage(currPlayer, msg);
 						break;
 					case 'check':
+						// check if opponent rapper's stamina is at 0
+						if(opponent.settings.currentRapper.stamina === 0){
+							// if so, trigger battle end and return to selction screen 
+							this.actions.endBattle()
+						} else{
+							// if not go to next turn
+							this.actions.endTurn()
+						}
 						break;
 				}
 			},
