@@ -134,14 +134,32 @@ class GameManager{
 				playerOne.getPlayerDetails();
 				playerTwo.assembleTeam();
 				playerTwo.getPlayerDetails();
-				this.settings.players.push(playerOne)
-				this.settings.players.push(playerTwo)
+				this.settings.players.push(playerOne);
+				this.settings.players.push(playerTwo);
+				// listen for when to prepare battle assets
+				document.addEventListener('prepareBattle', ()=>{
+					this.actions.prepareBattle();
+				});
 			},
 			prepareBattle: () => {
 				const playerOneSelection = document.getElementById('playerOne').getElementsByClassName('selected-card')[0].getAttribute('data-rapper-name');
 				const playerTwoSelection = document.getElementById('playerTwo').getElementsByClassName('selected-card')[0].getAttribute('data-rapper-name');
 				playerOne.setCurrentRapper(playerOneSelection); 
-				playerTwo.setCurrentRapper(playerTwoSelection); 
+				playerTwo.setCurrentRapper(playerTwoSelection);
+				
+				// listen for when to start battle
+				document.addEventListener('startBattle', () => {
+					this.actions.startBattle();
+					document.getElementById('playerOne').getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {
+						console.log('clicked', e.target)
+						this.actions.proceedToNextAction(e);
+					});
+					document.getElementById('playerTwo').getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {
+						console.log('clicked', e.target)
+						this.actions.proceedToNextAction(e);
+					});
+				});
+
 			},
 			startBattle: () => {
 				// pick who goes first
@@ -172,19 +190,37 @@ class GameManager{
 				this.settings.currentPlayer = (this.settings.currentPlayer+1)%2
 			},
 			endTurn: () => {
-				
+				//reset action count
+				this.actions.actionCount= -1;
+				//clear message screen
+				this.actions.clearMessage(this.settings.currentPlayer);
+				//turn off current player message screen
+				let continueBtn = document.getElementById(this.settings.currentPlayer.getPlayerElId()).getElementsByClassName('continue-button')[0];
+				continueBtn.style.display = 'none';
+				//change current player
+				let newOpp = this.settings.currentPlayer; 
+				let currPlayer = this.settings.opponent; 
+				this.settings.currentPlayer = currPlayer;
+				this.settings.opponent = newOpp;
+				//send message that next player's turn is starting
+				let msg = 'Now it\'s '+this.settings.currentPlayer.settings.name+'\'s turn';
+				this.actions.sendMessage(this.settings.currentPlayer, msg);
+				//allow procession of battle
+				this.actions.allowProceed();
+				document.getElementById(currPlayer.getPlayerElId()).getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {
+					this.actions.proceedToNextAction(e);
+				});
 			},
 			handleTurn: (action) => {
 				console.log('handle turn called', action)
 				let currPlayer = this.settings.currentPlayer;
+				const currentCardEl = document.querySelectorAll('[data-rapper-name="'+this.settings.currentPlayer.settings.currentRapper.name+'"]')[0];
+				let songs = currentCardEl.getElementsByClassName('rapper-song');
+				let currPlayerEl = document.getElementById(this.settings.currentPlayer.getPlayerElId());
 				let opponent = this.settings.opponent;
 				switch(action){
 					case 'prompt':
 						this.actions.sendMessage(currPlayer, 'Rap! Pick a song');
-						const currentCardEl = document.querySelectorAll('[data-rapper-name="'+this.settings.currentPlayer.settings.currentRapper.name+'"]')[0];
-						let songs = currentCardEl.getElementsByClassName('rapper-song');
-						let currPlayerEl = document.getElementById(this.settings.currentPlayer.getPlayerElId());
-						console.log(songs);
 						Array.from(songs).forEach((item, index) => {
 							currPlayerEl.getElementsByClassName('rapper-song')[index].addEventListener('click', (e) => {
 								if (document.getElementById('playerOne').getElementsByClassName('selected-card').length > 0) {
@@ -195,6 +231,11 @@ class GameManager{
 						})
 						break;
 					case 'rap':
+						if(this.settings.currentPlayer.settings.name === 'CPU') {
+							let randomSongIndex = Math.floor(Math.random()*songs.length);
+							console.log(randomSongIndex);
+							currPlayerEl.getElementsByClassName('rapper-song')[randomSongIndex].classList.add('selected-card');
+						}
 						let selectedSong = document.getElementById(this.settings.currentPlayer.getPlayerElId()).getElementsByClassName('selected-card')[0].innerText;
 						console.log('rapper about to rap');
 						let rapping = this.settings.currentPlayer.settings.currentRapper.rap(selectedSong);
@@ -207,6 +248,8 @@ class GameManager{
 						this.actions.sendMessage(currPlayer, msg);
 						break;
 					case 'check':
+						//clear selection
+						currPlayerEl.getElementsByClassName('selected-card')[0].classList.remove('selected-card');
 						// check if opponent rapper's stamina is at 0
 						if(opponent.settings.currentRapper.stamina === 0){
 							// if so, trigger battle end and return to selction screen 
@@ -217,6 +260,9 @@ class GameManager{
 						}
 						break;
 				}
+			},
+			endBattle: () => {
+
 			},
 			clearMessage: (player) => {
 				let oldMessage = document.getElementById(this.settings.currentPlayer.getPlayerElId()).getElementsByClassName('message')[0];

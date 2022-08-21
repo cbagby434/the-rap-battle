@@ -12,20 +12,6 @@ for (screen in screens){
 // start the game
 rapBattleGame.actions.startGame();
 
-document.addEventListener('prepareBattle', ()=>{
-	rapBattleGame.actions.prepareBattle()
-});
-
-document.addEventListener('startBattle', () => {
-	rapBattleGame.actions.startBattle();
-	document.getElementById('playerOne').getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {
-		rapBattleGame.actions.proceedToNextAction(e);
-	});
-	document.getElementById('playerTwo').getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {
-		rapBattleGame.actions.proceedToNextAction(e);
-	});
-});
-
 document.addEventListener('setupPlayers', () => {
 	// listening to event from user interaction with gamescreen 
 	rapBattleGame.actions.setupPlayers();
