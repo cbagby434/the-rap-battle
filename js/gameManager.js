@@ -256,7 +256,7 @@ class GameManager{
 						console.log('rapper about to rap');
 						let rapping = this.settings.currentPlayer.settings.currentRapper.rap(selectedSong);
 						if (rapping.disableSong) {
-							document.getElementById(currPlayer.getPlayerElId()).querySelectorAll('[data-song-name="Song1"]')[0].classList.add('disabled');
+							document.getElementById(currPlayer.getPlayerElId()).querySelectorAll('[data-song-name="'+selectedSong+'"]')[0].classList.add('disabled');
 						}
 						this.settings.damageQueue = rapping.damage;
 						this.actions.sendMessage(currPlayer, rapping.lyrics);
