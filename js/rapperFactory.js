@@ -79,7 +79,7 @@ class Rapper {
 			pendingRaps.lyrics = lyrics[randLyricIndex];
 			pendingRaps.damage = (rapper.maxDamage / lyrics.length) * (randLyricIndex + 1);
 			// move lyric to song trash array, so that it won't be used again
-			pendingTrash = rapper.songs[song].lyrics.splice(randLyricIndex, 1);
+			let pendingTrash = rapper.songs[song].lyrics.splice(randLyricIndex, 1);
 			rapper.songs[song].trash.push(pendingTrash);
 			// if after turn, no more lyrics are left for song, disable song for use
 			if (rapper.songs[song].lyrics.length === 0) {
