@@ -62,13 +62,15 @@ class Rapper {
 		rapper.songs = {};
 		options.moves.forEach((song)=>{
 			rapper.songs[song['name']] = {
-				'lyrics': song['lyrics']
+				'lyrics': song['lyrics'],
+				'trash':[] // lyrics that have already been used in battle
 			}
 		});
 		rapper.rap = (song) => {
 			let pendingRaps = {
 				lyrics:'',
-				damage:0
+				damage:0,
+				disableSong: false
 			}
 			// receive selected song
 			const lyrics = rapper.songs[song].lyrics
@@ -76,6 +78,13 @@ class Rapper {
 			const randLyricIndex = Math.floor(Math.random()*lyrics.length)
 			pendingRaps.lyrics = lyrics[randLyricIndex];
 			pendingRaps.damage = (rapper.maxDamage / lyrics.length) * (randLyricIndex + 1);
+			// move lyric to song trash array, so that it won't be used again
+			pendingTrash = rapper.songs[song].lyrics.splice(randLyricIndex, 1);
+			rapper.songs[song].trash.push(pendingTrash);
+			// if after turn, no more lyrics are left for song, disable song for use
+			if (rapper.songs[song].lyrics.length === 0) {
+				pendingRaps.disableSong = true;
+			}
 			// return object of rap lyrics and pending damage to opponent stamina
 			return pendingRaps;
 		}
@@ -91,7 +100,7 @@ class Rapper {
 			let songs = ''
 
 			options.moves.forEach((item)=>{
-				songs = songs + '<div class="rapper-song">'+item.name+'</div>';
+				songs = songs + '<div class="rapper-song" data-song-name="'+item.name+'">'+item.name+'</div>';
 			})
 
 			const cardElement = '<div data-rapper-name="'+name+'" style="background-color:'+rapper.color+';" class="rapper-card">'+

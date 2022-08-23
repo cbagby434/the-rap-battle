@@ -91,6 +91,12 @@ html, body {
     box-shadow: 0.25rem 0.25rem yellow;
     color: yellow;
 }
+.disabled{
+	pointer-events: none;
+	border: solid 0.0625rem darkgrey;
+    box-shadow: 0.25rem 0.25rem darkgrey;
+    color: darkgrey;
+}
 /*#battle-page #playerTwo .rapper-display{
 	justify-content: right;
 }

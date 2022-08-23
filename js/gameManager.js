@@ -85,6 +85,7 @@ class GameManager{
 				playerOne:['prompt', 'rap', 'damage', 'check'],
 				playerTwo:['rap', 'damage', 'check']
 			},
+			canProceed: false,
 			actionCount:-1,
 			startGame: () => {
 				// begins showing user game screens, beginning with the first in the screenOrder array
@@ -151,12 +152,14 @@ class GameManager{
 				document.addEventListener('startBattle', () => {
 					this.actions.startBattle();
 					document.getElementById('playerOne').getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {
-						console.log('clicked', e.target)
-						this.actions.proceedToNextAction(e);
+						if (this.actions.canProceed) {
+							this.actions.proceedToNextAction(e);
+						}
 					});
 					document.getElementById('playerTwo').getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {
-						console.log('clicked', e.target)
-						this.actions.proceedToNextAction(e);
+						if (this.actions.canProceed) {
+							this.actions.proceedToNextAction(e);
+						}
 					});
 				});
 
@@ -168,6 +171,7 @@ class GameManager{
 				this.settings.opponent = this.settings.players[1];
 				let msg = this.settings.currentPlayer.settings.name+' will go first';
 				this.actions.sendMessage(this.settings.currentPlayer, msg);
+				this.actions.canProceed = true;
 				this.actions.allowProceed();
 			},
 			proceedToNextAction: (e) => {
@@ -177,10 +181,13 @@ class GameManager{
 				let action = this.actions.playerActions[currPlayer][this.actions.actionCount];
 				this.actions.handleTurn(action)
 				document.getElementById(currPlayer).getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {
-					this.actions.proceedToNextAction(e);
+					if (this.actions.canProceed) {
+						this.actions.proceedToNextAction(e);
+					}
 				});
 			},
 			allowProceed: () => {
+				console.log('allowProceed');
 				let continueBtn = document.getElementById(this.settings.currentPlayer.getPlayerElId()).getElementsByClassName('continue-button')[0];
 				setTimeout(() => {
 					continueBtn.style.display = "inline-block";
@@ -208,7 +215,9 @@ class GameManager{
 				//allow procession of battle
 				this.actions.allowProceed();
 				document.getElementById(currPlayer.getPlayerElId()).getElementsByClassName('continue-button')[0].addEventListener('click', (e) => {
-					this.actions.proceedToNextAction(e);
+					if(this.actions.canProceed){
+						this.actions.proceedToNextAction(e);
+					}
 				});
 			},
 			handleTurn: (action) => {
@@ -220,17 +229,24 @@ class GameManager{
 				let opponent = this.settings.opponent;
 				switch(action){
 					case 'prompt':
+						this.actions.canProceed = false;
 						this.actions.sendMessage(currPlayer, 'Rap! Pick a song');
 						Array.from(songs).forEach((item, index) => {
 							currPlayerEl.getElementsByClassName('rapper-song')[index].addEventListener('click', (e) => {
-								if (document.getElementById('playerOne').getElementsByClassName('selected-card').length > 0) {
-									document.getElementById('playerOne').getElementsByClassName('selected-card')[0].classList.remove('selected-card');
+								let thisPlayer = this.settings.currentPlayer;
+								let thisAction = this.actions.playerActions[thisPlayer.getPlayerElId()][this.actions.actionCount];
+								if(thisAction === 'prompt' && thisPlayer.settings.name !== 'CPU'){
+									this.actions.canProceed = true;
+									if (document.getElementById('playerOne').getElementsByClassName('selected-card').length > 0) {
+										document.getElementById('playerOne').getElementsByClassName('selected-card')[0].classList.remove('selected-card');
+									}
+									e.target.classList.add('selected-card');
 								}
-								e.target.classList.add('selected-card');
 							});
 						})
 						break;
 					case 'rap':
+						this.actions.canProceed = false;
 						if(this.settings.currentPlayer.settings.name === 'CPU') {
 							let randomSongIndex = Math.floor(Math.random()*songs.length);
 							console.log(randomSongIndex);
@@ -239,17 +255,25 @@ class GameManager{
 						let selectedSong = document.getElementById(this.settings.currentPlayer.getPlayerElId()).getElementsByClassName('selected-card')[0].innerText;
 						console.log('rapper about to rap');
 						let rapping = this.settings.currentPlayer.settings.currentRapper.rap(selectedSong);
+						if (rapping.disableSong) {
+							document.getElementById(currPlayer.getPlayerElId()).querySelectorAll('[data-song-name="Song1"]')[0].classList.add('disabled')
+						}
 						this.settings.damageQueue = rapping.damage;
 						this.actions.sendMessage(currPlayer, rapping.lyrics);
+						this.actions.canProceed = true;
 						break;
 					case 'damage':
+						this.actions.canProceed = false;
 						opponent.settings.currentRapper.staminaLoss(this.settings.damageQueue);
 						let msg = 'those bars hurt '+opponent.settings.currentRapper.name+'\'s '+'stamina by '+ this.settings.damageQueue+' points';
 						this.actions.sendMessage(currPlayer, msg);
+						this.actions.canProceed = true;
 						break;
 					case 'check':
+						this.actions.canProceed = false;
 						//clear selection
 						currPlayerEl.getElementsByClassName('selected-card')[0].classList.remove('selected-card');
+						this.actions.canProceed = true;
 						// check if opponent rapper's stamina is at 0
 						if(opponent.settings.currentRapper.stamina === 0){
 							// if so, trigger battle end and return to selction screen 
